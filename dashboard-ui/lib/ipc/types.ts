@@ -126,13 +126,21 @@ export interface ExtractedData {
   // Results
   primary_outcomes?: OutcomeResult[];
   secondary_outcomes?: OutcomeResult[];
+  subgroup_analyses?: SubgroupAnalysis[];
   statistics?: Statistics;
 
-  // Quality
+  // Flow Tracking
+  randomized_n?: number;
+  analyzed_n?: number;
+  attrition_rate?: number;
+
+  // Quality & Synthesis
   risk_of_bias?: RiskOfBias;
   quality_score?: QualityScore;
+  author_conclusion?: string;
 
-  // Metadata
+  // Metadata & Verification
+  extraction_evidence?: Record<string, EvidenceHighlight>; // Linked to field keys
   extracted_by: string;
   ai_model?: string;
   extraction_confidence?: number;
@@ -140,6 +148,18 @@ export interface ExtractedData {
 
   extracted_at: string;
   last_edited_at: string;
+}
+
+export interface EvidenceHighlight {
+  text: string;
+  page: number;
+  rects: number[][]; // [x1, y1, x2, y2]
+}
+
+export interface SubgroupAnalysis {
+  group_name: string;
+  n: number;
+  result: OutcomeResult;
 }
 
 export interface PopulationData {
@@ -176,8 +196,11 @@ export interface OutcomeResult {
   control_sd?: number;
   control_n?: number;
   p_value?: number;
+  std_error?: number;
+  hazard_ratio?: number;
   effect_size?: number;
-  effect_size_type?: 'SMD' | 'MD' | 'RR' | 'OR';
+  effect_size_type?: 'SMD' | 'MD' | 'RR' | 'OR' | 'HR';
+  is_derived?: boolean;
 }
 
 export interface Statistics {

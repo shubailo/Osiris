@@ -54,10 +54,27 @@ export function useExtraction(projectId: number) {
             });
 
             await loadData();
+            return true;
         } catch (err: any) {
             setError(err.message || 'Extraction failed');
+            return false;
         } finally {
             setIsExtracting(false);
+        }
+    };
+
+    const batchExtract = async () => {
+        const pending = articles.filter(a => a.extraction_status !== 'complete');
+        if (pending.length === 0) return;
+
+        setIsExtracting(true);
+        try {
+            for (const article of pending) {
+                await extractArticle(article.id);
+            }
+        } finally {
+            setIsExtracting(false);
+            await loadData();
         }
     };
 
@@ -74,6 +91,7 @@ export function useExtraction(projectId: number) {
         selectedArticleId,
         setSelectedArticleId,
         extractArticle,
+        batchExtract,
         getArticleExtractedData,
         refresh: loadData
     };

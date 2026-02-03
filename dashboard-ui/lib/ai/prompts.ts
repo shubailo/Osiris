@@ -199,25 +199,28 @@ OUTPUT FORMAT: Respond ONLY with valid JSON matching the schema provided.`,
     "duration": "string" | null
   },
   "study_design": "RCT" | "Crossover RCT" | "Cluster RCT" | "Cohort" | "Case-Control" | "Meta-Analysis" | "other",
+  "randomized_n": number | null,
+  "analyzed_n": number | null,
   "duration_weeks": number | null,
   "primary_outcomes": [
     {
       "outcome": "string",
       "measurement_tool": "string",
       "timepoint": "string",
-      "intervention_mean": number,
-      "intervention_sd": number,
-      "intervention_n": number,
-      "control_mean": number,
-      "control_sd": number,
-      "control_n": number,
+      "intervention_mean": number | null,
+      "intervention_sd": number | null,
+      "intervention_n": number | null,
+      "control_mean": number | null,
+      "control_sd": number | null,
+      "control_n": number | null,
       "p_value": number | null,
+      "std_error": number | null,
+      "hazard_ratio": number | null,
       "effect_size": number | null,
-      "effect_size_type": "SMD" | "MD" | "RR" | "OR" | null,
+      "effect_size_type": "SMD" | "MD" | "RR" | "OR" | "HR" | null,
       "confidence_interval": [number, number] | null
     }
   ],
-  "secondary_outcomes": [...],  // Same structure
   "risk_of_bias": {
     "random_sequence_generation": "low" | "high" | "unclear",
     "allocation_concealment": "low" | "high" | "unclear",
@@ -227,7 +230,12 @@ OUTPUT FORMAT: Respond ONLY with valid JSON matching the schema provided.`,
     "selective_reporting": "low" | "high" | "unclear",
     "other_bias": "low" | "high" | "unclear"
   },
-  "notes": "string - any important caveats or additional context"
+  "extraction_evidence": {
+    "primary_outcome_value": { "text": "string quote", "page": number },
+    "risk_of_bias_reason": { "text": "string quote", "page": number }
+  },
+  "author_conclusion": "string",
+  "notes": "string"
 }
 \`\`\`
 

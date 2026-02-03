@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useExtraction } from "@/hooks/useExtraction"
+import { ExtractionTable } from "./extraction-table"
 
 interface ExtractionViewProps {
   projectId?: number
@@ -17,16 +18,24 @@ interface ExtractionViewProps {
 export function ExtractionView({ projectId = 1 }: ExtractionViewProps) {
   const {
     articles,
+    extractedData,
     isExtracting,
     isLoading,
     error,
     selectedArticleId,
     setSelectedArticleId,
     extractArticle,
-    getArticleExtractedData
+    batchExtract
   } = useExtraction(projectId)
 
   const [activeTab, setActiveTab] = useState("extraction")
+  const [isVerifyMode, setIsVerifyMode] = useState(false)
+
+  // Map extractedData array to Record<article_id, ExtractedData>
+  const dataMap = (extractedData || []).reduce((acc, curr) => {
+    acc[curr.article_id] = curr
+    return acc
+  }, {} as Record<number, any>)
 
   const selectedArticle = articles.find((a) => a.id === selectedArticleId)
   const extractedCount = articles.filter((a) => a.extraction_status === 'complete').length
@@ -34,6 +43,10 @@ export function ExtractionView({ projectId = 1 }: ExtractionViewProps) {
 
   const handleExtract = async (id: number) => {
     await extractArticle(id)
+  }
+
+  const handleBatchExtract = async () => {
+    await batchExtract()
   }
 
   return (
@@ -74,6 +87,7 @@ export function ExtractionView({ projectId = 1 }: ExtractionViewProps) {
               <p className="text-white/90 text-sm">Automatically extract data using local LLMs</p>
             </div>
             <Button
+              onClick={handleBatchExtract}
               disabled={pendingCount === 0 || isExtracting}
               className="w-full bg-white text-indigo-600 hover:bg-white/90 font-semibold border-0"
             >
@@ -164,18 +178,30 @@ export function ExtractionView({ projectId = 1 }: ExtractionViewProps) {
                   <h3 className="text-base font-semibold text-foreground">Article Preview</h3>
                   <p className="text-sm text-muted-foreground">Review and extract data</p>
                 </div>
-                {selectedArticle && (
-                  <Badge
-                    className={cn(
-                      "border-0 px-3 py-1 text-[10px] uppercase font-bold tracking-wider",
-                      selectedArticle.extraction_status === 'complete'
-                        ? "bg-emerald-500/10 text-emerald-500"
-                        : "bg-orange-500/10 text-orange-500",
-                    )}
-                  >
-                    {selectedArticle.extraction_status === 'complete' ? "Extracted" : selectedArticle.extraction_status}
-                  </Badge>
-                )}
+                <div className="flex items-center gap-2">
+                  {selectedArticle && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setIsVerifyMode(!isVerifyMode)}
+                      className={cn("h-8 text-[10px] font-bold uppercase", isVerifyMode && "bg-primary/10 border-primary text-primary")}
+                    >
+                      {isVerifyMode ? "Close Verify" : "Verify Side-by-Side"}
+                    </Button>
+                  )}
+                  {selectedArticle && (
+                    <Badge
+                      className={cn(
+                        "border-0 px-3 py-1 text-[10px] uppercase font-bold tracking-wider",
+                        selectedArticle.extraction_status === 'complete'
+                          ? "bg-emerald-500/10 text-emerald-500"
+                          : "bg-orange-500/10 text-orange-500",
+                      )}
+                    >
+                      {selectedArticle.extraction_status === 'complete' ? "Extracted" : selectedArticle.extraction_status}
+                    </Badge>
+                  )}
+                </div>
               </div>
 
               {selectedArticle ? (
@@ -256,19 +282,26 @@ export function ExtractionView({ projectId = 1 }: ExtractionViewProps) {
         </TabsContent>
 
         <TabsContent value="summary" className="mt-4">
-          <div className="rounded-2xl border border-border bg-card overflow-hidden">
-            <div className="p-4 border-b border-border bg-muted/50">
-              <h3 className="text-base font-semibold text-foreground">Extracted Data Summary</h3>
-              <p className="text-sm text-muted-foreground">Overview of all extracted data</p>
+          {extractedCount > 0 ? (
+            <ExtractionTable
+              articles={articles.filter(a => a.extraction_status === 'complete')}
+              extractedData={dataMap}
+            />
+          ) : (
+            <div className="rounded-2xl border border-border bg-card overflow-hidden">
+              <div className="p-4 border-b border-border bg-muted/50">
+                <h3 className="text-base font-semibold text-foreground">Extracted Data Summary</h3>
+                <p className="text-sm text-muted-foreground">Overview of all extracted data</p>
+              </div>
+              <div className="flex flex-col items-center justify-center h-[350px] text-center p-5">
+                <Table className="h-10 w-10 text-muted-foreground mb-3" />
+                <p className="text-sm font-medium text-foreground">No data summary yet</p>
+                <p className="text-xs text-muted-foreground max-w-md">
+                  Extract data from articles to see a unified summary here.
+                </p>
+              </div>
             </div>
-            <div className="flex flex-col items-center justify-center h-[350px] text-center p-5">
-              <Table className="h-10 w-10 text-muted-foreground mb-3" />
-              <p className="text-sm font-medium text-foreground">No data summary yet</p>
-              <p className="text-xs text-muted-foreground max-w-md">
-                Extract data from articles to see a unified summary here.
-              </p>
-            </div>
-          </div>
+          )}
         </TabsContent>
       </Tabs>
     </div>
