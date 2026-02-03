@@ -7,8 +7,10 @@ import type {
     ExportCSVRequest, ExportCSVResponse, GeneratePRISMARequest, GeneratePRISMAResponse,
     AppSettings, UpdateSettingRequest, ProjectStats, AIUsageSummary
 } from '../dashboard-ui/lib/ipc/types';
-
-// Expose safe IPC bridge to renderer
+/// <reference lib="dom" />
+/**
+ * Preload script for safe IPC exposure to renderer
+ */
 contextBridge.exposeInMainWorld('electron', {
     // =====================================================
     // Projects
@@ -151,14 +153,32 @@ contextBridge.exposeInMainWorld('electron', {
         const listener = (_event: IpcRendererEvent, progress: any) => callback(progress);
         ipcRenderer.on('event:screening-progress', listener);
         return () => ipcRenderer.removeListener('event:screening-progress', listener);
-    }
+    },
+
+    // Export Operations
+    exportPrisma: (request: { project_id: number; output_path: string }) =>
+        ipcRenderer.invoke('export:prisma-diagram', request),
+
+    exportRevManCSV: (request: { project_id: number; output_path: string }) =>
+        ipcRenderer.invoke('export:revman-csv', request),
+
+    exportRevManXML: (request: { project_id: number; output_path: string }) =>
+        ipcRenderer.invoke('export:revman-xml', request),
+
+    exportJSON: (request: { project_id: number; output_path: string }) =>
+        ipcRenderer.invoke('export:json', request),
+
+    exportAll: (request: { project_id: number; output_dir: string }) =>
+        ipcRenderer.invoke('export:all', request),
+
+    selectExportLocation: () =>
+        ipcRenderer.invoke('fs:select-export-location')
 });
 
-declare global {
-    interface Window {
-        electron: any;
-    }
+interface LocalWindow {
+    electron: any;
 }
+declare const window: LocalWindow;
 
 // Type definition for renderer (global.d.ts)
 export type ElectronAPI = typeof window.electron;

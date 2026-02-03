@@ -42,6 +42,11 @@
         "files": [
             "dist-electron/**/*",
             "dashboard-ui/out/**/*",
+            "electron/db/schema.sql",
+            "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+            "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+            "!**/node_modules/*.d.ts",
+            "!**/node_modules/.bin",
             "!**/*.ts",
             "!*.map"
         ],
@@ -54,14 +59,15 @@
                     ]
                 }
             ],
-            "icon": "resources/icon.ico"
+            "icon": "resources/icon.png"
         },
         "nsis": {
             "oneClick": false,
             "perMachine": true,
             "allowToChangeInstallationDirectory": true,
             "createDesktopShortcut": true,
-            "createStartMenuShortcut": true
+            "createStartMenuShortcut": true,
+            "shortcutName": "IRIS Meta-Analysis"
         }
     }
 }

@@ -42,10 +42,13 @@ export function useScreening(projectId: number) {
                     await ipcClient.saveScreeningDecision({
                         article_id: article.id,
                         decision: result.decision,
-                        confidence_score: result.confidence,
+                        confidence: result.confidence,
                         reasoning: result.reasoning,
                         consensus_type: result.consensus_type,
-                        model_votes: result.model_votes
+                        model_votes: result.model_votes,
+                        ai_provider: 'local-council',
+                        is_manual_override: false,
+                        decided_by: 'ai'
                     });
 
                     setProgress(prev => ({ ...prev, current: i + 1 }));
@@ -72,9 +75,12 @@ export function useScreening(projectId: number) {
             await ipcClient.saveScreeningDecision({
                 article_id: articleId,
                 decision,
-                confidence_score: 100,
+                confidence: 100,
                 reasoning: 'Manually updated by user',
-                consensus_type: 'manual'
+                consensus_type: 'manual',
+                ai_provider: 'manual',
+                is_manual_override: true,
+                decided_by: 'user'
             });
             await loadArticles();
         } catch (err: any) {

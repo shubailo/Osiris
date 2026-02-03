@@ -19,7 +19,7 @@ export function useExtraction(projectId: number) {
                 ipcClient.getAllExtractedData(projectId)
             ]);
 
-            const included = articlesData.filter(a => a.decision === 'include');
+            const included = articlesData.filter((a: ArticleWithDecision) => a.decision === 'include') as ArticleWithDecision[];
             setArticles(included);
             setExtractedData(allExtracted);
 

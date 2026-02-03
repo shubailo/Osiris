@@ -148,12 +148,12 @@ export function AnalysisView({ stats }: AnalysisViewProps) {
         />
         <StatCard
           title="Total Participants"
-          value={metaAnalysisSummary.totalN.toLocaleString()}
+          value={metaAnalysisSummary.totalN}
           subtitle="across all studies"
           icon={Users}
           variant="success"
         />
-        <StatCard title="Publication Period" value="2019" subtitle="to 2024" icon={Calendar} variant="warning" />
+        <StatCard title="Publication Period" value={2019} subtitle="to 2024" icon={Calendar} variant="warning" />
       </div>
 
       <div className="flex gap-2 p-1 rounded-xl bg-card border border-border w-fit">
