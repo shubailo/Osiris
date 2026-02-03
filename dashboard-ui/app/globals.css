@@ -1,0 +1,155 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Dark theme for IRIS dashboard - QML-friendly color tokens */
+:root {
+  /* Base colors */
+  --background: #0a0e14;
+  --background-alt: #0f1419;
+  --foreground: #e6e6e6;
+  --foreground-muted: #8b949e;
+
+  /* Card/Surface */
+  --card: #161b22;
+  --card-hover: #1c2128;
+  --card-foreground: #e6e6e6;
+  --popover: #161b22;
+  --popover-foreground: #e6e6e6;
+
+  /* Primary (blue) */
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --primary-light: rgba(59, 130, 246, 0.15);
+  --primary-foreground: #ffffff;
+
+  /* Secondary */
+  --secondary: #1c2128;
+  --secondary-foreground: #e6e6e6;
+
+  /* Muted */
+  --muted: #21262d;
+  --muted-foreground: #8b949e;
+
+  /* Accent */
+  --accent: #21262d;
+  --accent-foreground: #e6e6e6;
+
+  /* Success (green) */
+  --success: #22c55e;
+  --success-light: rgba(34, 197, 94, 0.15);
+  --success-foreground: #ffffff;
+
+  /* Warning (amber) */
+  --warning: #f59e0b;
+  --warning-light: rgba(245, 158, 11, 0.15);
+  --warning-foreground: #ffffff;
+
+  /* Destructive (red) */
+  --destructive: #ef4444;
+  --destructive-light: rgba(239, 68, 68, 0.15);
+  --destructive-foreground: #ffffff;
+
+  /* Info (cyan) */
+  --info: #06b6d4;
+  --info-light: rgba(6, 182, 212, 0.15);
+  --info-foreground: #ffffff;
+
+  /* Purple */
+  --purple: #a855f7;
+  --purple-light: rgba(168, 85, 247, 0.15);
+  --purple-foreground: #ffffff;
+
+  /* Border */
+  --border: #30363d;
+  --input: #21262d;
+  --ring: #3b82f6;
+
+  /* Charts */
+  --chart-1: #3b82f6;
+  --chart-2: #22c55e;
+  --chart-3: #f59e0b;
+  --chart-4: #ef4444;
+  --chart-5: #a855f7;
+
+  --radius: 0.75rem;
+
+  /* Sidebar */
+  --sidebar: #0f1419;
+  --sidebar-foreground: #e6e6e6;
+  --sidebar-primary: #3b82f6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #21262d;
+  --sidebar-accent-foreground: #e6e6e6;
+  --sidebar-border: #30363d;
+  --sidebar-ring: #3b82f6;
+}
+
+@theme inline {
+  --font-sans: "Inter", "Inter Fallback", system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", monospace;
+  --color-background: var(--background);
+  --color-background-alt: var(--background-alt);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-card: var(--card);
+  --color-card-hover: var(--card-hover);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-success: var(--success);
+  --color-success-light: var(--success-light);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-light: var(--warning-light);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-light: var(--destructive-light);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-info: var(--info);
+  --color-info-light: var(--info-light);
+  --color-info-foreground: var(--info-foreground);
+  --color-purple: var(--purple);
+  --color-purple-light: var(--purple-light);
+  --color-purple-foreground: var(--purple-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

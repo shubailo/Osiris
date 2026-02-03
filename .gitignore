@@ -1,0 +1,45 @@
+# Ignore dependencies
+node_modules/
+dashboard-ui/node_modules/
+
+# Build outputs
+dist/
+dist-electron/
+out/
+build/
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+
+# PDFs (user uploaded files)
+pdfs/
+
+# Temp files
+tmp/
+temp/
+
+# Test outputs
+test-pdfs/*.png
+test-pdfs/*.csv
+test-pdfs/*.xml
+test-pdfs/*.json
